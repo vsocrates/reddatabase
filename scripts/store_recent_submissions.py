@@ -8,6 +8,8 @@ my_client_secret = '7uUB8oh9icfrneygPnJUMW1m6Xg'
 
 def recent_submissions(subreddit_name):
 
+    print("test")
+
     reddit = praw.Reddit(user_agent=my_user_agent,
                          client_id=my_client_id,
                          client_secret=my_client_secret)
@@ -56,7 +58,7 @@ def recent_submissions(subreddit_name):
         recent_users.append(user_data)
 
     #Create connection
-    connection = MySQLdb.connect(host="",user="",passwd="",db="")
+    connection = MySQLdb.connect(host="127.0.0.1:3306",user="root",passwd="reddatabase",db="RDB")
 
     for submission in recent_submissions:
         try:

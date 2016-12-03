@@ -27,7 +27,7 @@ class moderator(models.Model):
 	subredditName = models.CharField(max_length=20)#, primary_key=True)
 	
 	class Meta:
-		unique_together (("migration", "host"),)
+		unique_together = (("username", "subredditName"),)
 
 class user(models.Model):
 	username = models.CharField(max_length=20, primary_key=True)
@@ -50,6 +50,13 @@ class submission_hasa_subreddit(models.Model):
 	subredditName = models.CharField(max_length=20)
 
 	class Meta:
-		unique_together (("postid", "subredditName"),)
+		unique_together = (("postid", "subredditName"),)
+
+class Comment_hasa_user(models.Model):
+	cid = models.CharField(max_length=6)
+	username = models.CharField(max_length=20)
+
+	class Meta:
+		unique_together = (("cid", "username"),)
 
 #your models here.
