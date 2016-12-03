@@ -22,13 +22,6 @@ class Comment(models.Model):
 	commentType = models.IntegerField
 	timeSubmitted = models.DateTimeField
 
-class moderator(models.Model):
-	username = username = models.CharField(max_length=20)#, primary_key=True)
-	subredditName = models.CharField(max_length=20)#, primary_key=True)
-	
-	class Meta:
-		unique_together = (("username", "subredditName"),)
-
 class user(models.Model):
 	username = models.CharField(max_length=20, primary_key=True)
 	karma = models.IntegerField
