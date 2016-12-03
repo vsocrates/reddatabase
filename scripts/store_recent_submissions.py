@@ -70,7 +70,7 @@ def recent_submissions(subreddit_name):
         try:
             with connection.cursor() as cursor:
                 #create sql statement
-                sql = ("INSERT INTO reddatabase_submission VALUES (%s, %s, %s, %s, %s, %s)")
+                sql = ("INSERT INTO reddatabase_submission VALUES (%s, %s, %s, %s, %s, %s, %s, %s)")
                 #execute sql statement
                 cursor.execute(sql, (submission['postid'],
                                     submission['username'],
