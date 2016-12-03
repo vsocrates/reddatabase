@@ -18,6 +18,7 @@ def recent_submissions(subreddit_name):
     recent_submissions = []
     recent_posts = []
     recent_users = []
+    counter = 0
 
     for submission in reddit.subreddit(subreddit_name).submissions():
         ratio = reddit.submission(id=submission.id,url=None).upvote_ratio
@@ -58,9 +59,14 @@ def recent_submissions(subreddit_name):
         recent_posts.append(post_data)
         recent_users.append(user_data)
 
+        if counter == 100:
+            break
+        else:
+            counter = counter + 1
+
     #Create connection
     connection = MySQLdb.connect(host="127.0.0.1:3306",user="root",passwd="reddatabase",db="RDB")
-
+    print(connection.)
     for submission in recent_submissions:
         try:
             with connection.cursor() as cursor:
