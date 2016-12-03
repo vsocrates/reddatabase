@@ -6,9 +6,10 @@ my_user_agent = 'Gafte'
 my_client_id = 'IB4hdXbF1kcsWQ'
 my_client_secret = '7uUB8oh9icfrneygPnJUMW1m6Xg'
 
-def recent_submissions(subreddit_name):
+#add subreddits to pull from here
+subreddits = ['sweden']
 
-    #print("test")
+def recent_submissions(subreddit_name):
 
     reddit = praw.Reddit(user_agent=my_user_agent,
                          client_id=my_client_id,
@@ -17,7 +18,6 @@ def recent_submissions(subreddit_name):
     recent_submissions = []
     recent_posts = []
     recent_users = []
-    #recent
 
     for submission in reddit.subreddit(subreddit_name).submissions():
         ratio = reddit.submission(id=submission.id,url=None).upvote_ratio
@@ -55,8 +55,7 @@ def recent_submissions(subreddit_name):
         }
 
         recent_submissions.append(submission_data)
-        print("test")
-	recent_posts.append(post_data)
+        recent_posts.append(post_data)
         recent_users.append(user_data)
 
     #Create connection
@@ -66,7 +65,7 @@ def recent_submissions(subreddit_name):
         try:
             with connection.cursor() as cursor:
                 #create sql statement
-                sql = ("INSERT INTO submission VALUES (%s, %s, %s, %s, %s, %s)")
+                sql = ("INSERT INTO reddatabase_submission VALUES (%s, %s, %s, %s, %s, %s)")
                 #execute sql statement
                 cursor.execute(sql, (submission['postid'],
                                     submission['username'],
@@ -85,7 +84,7 @@ def recent_submissions(subreddit_name):
         try:
             with connection.cursor() as cursor:
                 #create sql statement
-                sql = ("INSERT INTO " + postType + " VALUES (%s, %s)")
+                sql = ("INSERT INTO reddatabase_" + postType + " VALUES (%s, %s)")
                 #execute sql statement
                 cursor.execute(sql, (post['postid'],
                                     post['contents']))
@@ -98,7 +97,7 @@ def recent_submissions(subreddit_name):
         try:
             with connection.cursor() as cursor:
                 #create sql statement
-                sql = ("INSERT INTO users VALUES (%s, %s)")
+                sql = ("INSERT INTO reddatabase_users VALUES (%s, %s)")
                 #execute sql statement
                 cursor.execute(sql, (user['username'],
                                     user['karma']))
@@ -108,6 +107,8 @@ def recent_submissions(subreddit_name):
             pass
         connection.close()
 
+def start_script():
+    for subreddit in subreddits:
+        recent_submissions(subreddit)
 
-#haven't tested mysql stuff because mysql python was weird on OSX
-recent_submissions('sweden')
+start_script()
