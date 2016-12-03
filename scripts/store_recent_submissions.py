@@ -8,7 +8,7 @@ my_client_secret = '7uUB8oh9icfrneygPnJUMW1m6Xg'
 
 def recent_submissions(subreddit_name):
 
-    print("test")
+    #print("test")
 
     reddit = praw.Reddit(user_agent=my_user_agent,
                          client_id=my_client_id,
@@ -17,7 +17,7 @@ def recent_submissions(subreddit_name):
     recent_submissions = []
     recent_posts = []
     recent_users = []
-    recent
+    #recent
 
     for submission in reddit.subreddit(subreddit_name).submissions():
         ratio = reddit.submission(id=submission.id,url=None).upvote_ratio
@@ -55,7 +55,8 @@ def recent_submissions(subreddit_name):
         }
 
         recent_submissions.append(submission_data)
-        recent_posts.append(post_data)
+        print("test")
+	recent_posts.append(post_data)
         recent_users.append(user_data)
 
     #Create connection
