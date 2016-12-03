@@ -110,7 +110,8 @@ def recent_submissions(subreddit_name):
             print e.message
         finally:
             pass
-        connection.close()
+
+    connection.close()
 
 def start_script():
     for subreddit in subreddits:
