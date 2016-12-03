@@ -15,6 +15,7 @@ def recent_submissions(subreddit_name):
     recent_submissions = []
     recent_posts = []
     recent_users = []
+    recent
 
     for submission in reddit.subreddit(subreddit_name).submissions():
         ratio = reddit.submission(id=submission.id,url=None).upvote_ratio
@@ -72,6 +73,8 @@ def recent_submissions(subreddit_name):
                                     submission['downvotes'],
                                     submission['postType'],
                                     submission['timeSubmitted']))
+        except:
+            print("submissions", sys.exc_info()[0])
         finally:
             pass
 
@@ -83,6 +86,8 @@ def recent_submissions(subreddit_name):
                 #execute sql statement
                 cursor.execute(sql, (post['postid'],
                                     post['contents']))
+        except:
+            print("posts", sys.exc_info()[0])
         finally:
             pass
 
@@ -94,6 +99,8 @@ def recent_submissions(subreddit_name):
                 #execute sql statement
                 cursor.execute(sql, (user['username'],
                                     user['karma']))
+        except:
+            print("users", sys.exc_info()[0])
         finally:
             pass
         connection.close()
