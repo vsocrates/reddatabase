@@ -104,8 +104,10 @@ def recent_submissions(subreddit_name):
                 #create sql statement
                 sql = ("INSERT IGNORE INTO reddatabase_users VALUES (%s, %s)")
                 #execute sql statement
-                cursor.execute(sql, (user['username'],
-                                    user['karma']))
+                cursor.execute(sql, ("vimig",
+                                     2))
+                # cursor.execute(sql, (user['username'],
+                #                     user['karma']))
         except Exception as e:
             print e.message
         finally:
