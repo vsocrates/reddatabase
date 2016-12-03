@@ -80,7 +80,7 @@ def recent_submissions(subreddit_name):
                                     submission['downvotes'],
                                     submission['postType'],
                                     submission['timeSubmitted']))
-        except:
+        except Exception as e:
             print e.message
         finally:
             pass
@@ -106,7 +106,7 @@ def recent_submissions(subreddit_name):
                 #execute sql statement
                 cursor.execute(sql, (user['username'],
                                     user['karma']))
-        except:
+        except Exception as e:
             print e.message
         finally:
             pass
