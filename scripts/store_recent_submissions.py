@@ -111,6 +111,7 @@ def recent_submissions(subreddit_name):
         finally:
             pass
 
+    connection.commit()
     connection.close()
 
 def start_script():
