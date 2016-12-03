@@ -81,7 +81,7 @@ def recent_submissions(subreddit_name):
                                     submission['postType'],
                                     submission['timeSubmitted']))
         except:
-            print("submissions", sys.exc_info()[0])
+            print e.message
         finally:
             pass
 
@@ -93,8 +93,8 @@ def recent_submissions(subreddit_name):
                 #execute sql statement
                 cursor.execute(sql, (post['postid'],
                                     post['contents']))
-        except:
-            print("posts", sys.exc_info()[0])
+        except Exception as e:
+            print e.message
         finally:
             pass
 
@@ -102,12 +102,12 @@ def recent_submissions(subreddit_name):
         try:
             with connection.cursor() as cursor:
                 #create sql statement
-                sql = ("INSERT INTO reddatabase_users VALUES (%s, %s)")
+                sql = ("INSERT IGNORE INTO reddatabase_users VALUES (%s, %s)")
                 #execute sql statement
                 cursor.execute(sql, (user['username'],
                                     user['karma']))
         except:
-            print("users", sys.exc_info()[0])
+            print e.message
         finally:
             pass
         connection.close()
