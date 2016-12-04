@@ -25,7 +25,7 @@ SECRET_KEY = 'w7izm42(^qvm-^-r^p^#)uumn@8=_n%mr#9#(mc*so@1@$r(k#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['kevin-tower.student.cwru.edu']
+ALLOWED_HOSTS = ['kevin-tower.student.cwru.edu','localhost']
 
 
 # Application definition
@@ -77,9 +77,9 @@ WSGI_APPLICATION = 'reddatabase_site.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-	'NAME': 'RDB',
+	'NAME': 'rdb',
 	'USER': 'root',
-	'PASSWORD': 'reddatabase',
+	'PASSWORD': 'yahoo321',
 	'HOST': '127.0.0.1',
 	'PORT': '3306',
     }
