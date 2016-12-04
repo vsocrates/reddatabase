@@ -77,9 +77,9 @@ WSGI_APPLICATION = 'reddatabase_site.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-	'NAME': 'rdb',
+	'NAME': 'RDB',
 	'USER': 'root',
-	'PASSWORD': 'yahoo321',
+	'PASSWORD': 'reddatabase',
 	'HOST': '127.0.0.1',
 	'PORT': '3306',
     }
