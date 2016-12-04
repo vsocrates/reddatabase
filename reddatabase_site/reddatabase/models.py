@@ -7,10 +7,10 @@ class submission(models.Model):
 	username = models.CharField(max_length=20)
 	subredditName = models.CharField(max_length=20)
 	title = models.CharField(max_length=300)
-	upvotes = models.IntegerField
-	downvotes = models.IntegerField
-	postType = models.IntegerField
-	timeSubmitted = models.DateTimeField
+	upvotes = models.IntegerField()
+	downvotes = models.IntegerField()
+	postType = models.IntegerField()
+	timeSubmitted = models.DateTimeField()
 
 class Comment(models.Model):
 	cid = models.CharField(max_length=6, primary_key=True)
@@ -18,13 +18,13 @@ class Comment(models.Model):
 	postid = models.CharField(max_length=6)
 	text = models.CharField(max_length=40000)
 	username = models.CharField(max_length=20)
-	score = models.IntegerField
-	commentType = models.IntegerField
-	timeSubmitted = models.DateTimeField
+	score = models.IntegerField()
+	commentType = models.IntegerField()
+	timeSubmitted = models.DateTimeField()
 
 class user(models.Model):
 	username = models.CharField(max_length=20, primary_key=True)
-	karma = models.IntegerField
+	karma = models.IntegerField()
 
 class subreddit(models.Model):
 	subredditName = models.CharField(max_length=20, primary_key=True)
