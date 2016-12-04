@@ -68,9 +68,18 @@ def recent_submissions(subreddit_name):
     connection = MySQLdb.connect("127.0.0.1","root","reddatabase","RDB")
     cursor = connection.cursor()
 
+    for user in recent_users:
+        #create sql statement
+        sql = ("INSERT IGNORE INTO reddatabase_users VALUES (%s, %s)")
+        #execute sql statement
+        cursor.execute(sql, ("vimig",
+                             2))
+        # cursor.execute(sql, (user['username'],
+        #                     user['karma']))
+
     for submission in recent_submissions:
         #create sql statement
-        sql = ("INSERT INTO reddatabase_submission (`postid`, `username`, `subredditName`, `title`, `upvotes`, `downvotes`, `postType`, `timesubmitted`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)")
+        sql = ("INSERT INTO reddatabase_submission (postid, username, subredditName, title, upvotes, downvotes, postType, timesubmitted) VALUES (`%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`)")
         #execute sql statement
         cursor.execute(sql, (submission['postid'],
                             submission['username'],
@@ -88,14 +97,6 @@ def recent_submissions(subreddit_name):
         cursor.execute(sql, (post['postid'],
                             post['contents']))
 
-    for user in recent_users:
-        #create sql statement
-        sql = ("INSERT IGNORE INTO reddatabase_users VALUES (%s, %s)")
-        #execute sql statement
-        cursor.execute(sql, ("vimig",
-                             2))
-        # cursor.execute(sql, (user['username'],
-        #                     user['karma']))
 
     connection.commit()
     cursor.close()
