@@ -70,32 +70,30 @@ def recent_submissions(subreddit_name):
 
     for user in recent_users:
         #create sql statement
-        sql = ("INSERT IGNORE INTO reddatabase_user (username, karma) VALUES (%s, %s)")
+        sql = ("INSERT IGNORE INTO reddatabase_user ('username', 'karma') VALUES (%s, %s)")
         #execute sql statement
-        data = ('vimig', int(2))
-        cursor.execute(sql, data)
-        # cursor.execute(sql, (user['username'],
-        #                     user['karma']))
+        cursor.execute(sql, (user['username'],
+                            user['karma']))
 
-    # for submission in recent_submissions:
-    #     #create sql statement
-    #     sql = ("INSERT INTO reddatabase_submission (postid, username, subredditName, title, upvotes, downvotes, postType, timesubmitted) VALUES (`%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`)")
-    #     #execute sql statement
-    #     cursor.execute(sql, (submission['postid'],
-    #                         submission['username'],
-    #                         submission['subredditName'],
-    #                         submission['title'],
-    #                         submission['upvotes'],
-    #                         submission['downvotes'],
-    #                         submission['postType'],
-    #                         submission['timeSubmitted']))
-    #
-    # for post in recent_posts:
-    #     #create sql statement
-    #     sql = ("INSERT INTO reddatabase_" + postType + "post VALUES (%s, %s)")
-    #     #execute sql statement
-    #     cursor.execute(sql, (post['postid'],
-    #                         post['contents']))
+    for submission in recent_submissions:
+        #create sql statement
+        sql = ("INSERT INTO reddatabase_submission (postid, username, subredditName, title, upvotes, downvotes, postType, timesubmitted) VALUES (`%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`)")
+        #execute sql statement
+        cursor.execute(sql, (submission['postid'],
+                            submission['username'],
+                            submission['subredditName'],
+                            submission['title'],
+                            submission['upvotes'],
+                            submission['downvotes'],
+                            submission['postType'],
+                            submission['timeSubmitted']))
+
+    for post in recent_posts:
+        #create sql statement
+        sql = ("INSERT INTO reddatabase_" + postType + "post VALUES (%s, %s)")
+        #execute sql statement
+        cursor.execute(sql, (post['postid'],
+                            post['contents']))
 
 
     connection.commit()
