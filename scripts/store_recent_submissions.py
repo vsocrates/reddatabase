@@ -54,6 +54,7 @@ def recent_submissions(subreddit_name):
             'postType': postType,
             'timeSubmitted': datetime.datetime.utcfromtimestamp(submission.created_utc)
         }
+	print(submission_data)	
 
         recent_submissions.append(submission_data)
         recent_posts.append(post_data)
