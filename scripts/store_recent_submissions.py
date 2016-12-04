@@ -65,7 +65,7 @@ def recent_submissions(subreddit_name):
             counter = counter + 1
 
     #Create connection
-    connection = MySQLdb.connect(host="127.0.0.1",user="root",passwd="reddatabase",db="RDB")
+    connection = MySQLdb.connect("127.0.0.1","root","reddatabase","RDB")
     cursor = connection.cursor()
 
     for submission in recent_submissions:
