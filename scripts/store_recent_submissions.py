@@ -26,16 +26,16 @@ def recent_submissions(subreddit_name):
         downs = ups - submission.score
 
         if submission.selftext:
-            postType = 'link'
-            post_data = {
-                'postid': submission.id,
-                'contents': submission.url
-            }
-        else:
             postType = 'text'
             post_data = {
                 'postid': submission.id,
                 'contents': submission.selftext
+            }
+        else:
+            postType = 'link'
+            post_data = {
+                'postid': submission.id,
+                'contents': submission.url
             }
 
         user = reddit.redditor(submission.author.name)
@@ -77,7 +77,7 @@ def recent_submissions(subreddit_name):
 
     for submission in recent_submissions:
         #create sql statement
-        sql = ("INSERT IGNORE INTO reddatabase_submission VALUES (`%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`)")
+        sql = ("INSERT IGNORE INTO reddatabase_submission VALUES (%s, %s, %s, %s, %s, %s, %s, %s)")
         #execute sql statement
         cursor.execute(sql, (submission['postid'],
                             submission['username'],
