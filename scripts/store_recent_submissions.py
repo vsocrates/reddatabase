@@ -75,18 +75,18 @@ def recent_submissions(subreddit_name):
         cursor.execute(sql, (user['username'],
                             user['karma']))
 
-    for submission in recent_submissions:
-        #create sql statement
-        sql = ("INSERT INTO reddatabase_submission (postid, username, subredditName, title, upvotes, downvotes, postType, timesubmitted) VALUES (`%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`)")
-        #execute sql statement
-        cursor.execute(sql, (submission['postid'],
-                            submission['username'],
-                            submission['subredditName'],
-                            submission['title'],
-                            submission['upvotes'],
-                            submission['downvotes'],
-                            submission['postType'],
-                            submission['timeSubmitted']))
+    # for submission in recent_submissions:
+    #     #create sql statement
+    #     sql = ("INSERT INTO reddatabase_submission (postid, username, subredditName, title, upvotes, downvotes, postType, timesubmitted) VALUES (`%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`)")
+    #     #execute sql statement
+    #     cursor.execute(sql, (submission['postid'],
+    #                         submission['username'],
+    #                         submission['subredditName'],
+    #                         submission['title'],
+    #                         submission['upvotes'],
+    #                         submission['downvotes'],
+    #                         submission['postType'],
+    #                         submission['timeSubmitted']))
 
     for post in recent_posts:
         #create sql statement
