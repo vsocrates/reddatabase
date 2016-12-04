@@ -66,54 +66,39 @@ def recent_submissions(subreddit_name):
 
     #Create connection
     connection = MySQLdb.connect(host="127.0.0.1",user="root",passwd="reddatabase",db="RDB")
+    cursor = connection.cursor()
+
     for submission in recent_submissions:
-        try:
-            with connection.cursor() as cursor:
-                #create sql statement
-                sql = ("INSERT INTO reddatabase_submission VALUES (%s, %s, %s, %s, %s, %s, %s, %s)")
-                #execute sql statement
-                cursor.execute(sql, (submission['postid'],
-                                    submission['username'],
-                                    submission['title'],
-                                    submission['subredditName'],
-                                    submission['upvotes'],
-                                    submission['downvotes'],
-                                    submission['postType'],
-                                    submission['timeSubmitted']))
-        except Exception as e:
-            print e.message
-        finally:
-            pass
+        #create sql statement
+        sql = ("INSERT INTO reddatabase_submission VALUES (%s, %s, %s, %s, %s, %s, %s, %s)")
+        #execute sql statement
+        cursor.execute(sql, (submission['postid'],
+                            submission['username'],
+                            submission['title'],
+                            submission['subredditName'],
+                            submission['upvotes'],
+                            submission['downvotes'],
+                            submission['postType'],
+                            submission['timeSubmitted']))
 
     for post in recent_posts:
-        try:
-            with connection.cursor() as cursor:
-                #create sql statement
-                sql = ("INSERT INTO reddatabase_" + postType + " VALUES (%s, %s)")
-                #execute sql statement
-                cursor.execute(sql, (post['postid'],
-                                    post['contents']))
-        except Exception as e:
-            print e.message
-        finally:
-            pass
+        #create sql statement
+        sql = ("INSERT INTO reddatabase_" + postType + " VALUES (%s, %s)")
+        #execute sql statement
+        cursor.execute(sql, (post['postid'],
+                            post['contents']))
 
     for user in recent_users:
-        try:
-            with connection.cursor() as cursor:
-                #create sql statement
-                sql = ("INSERT IGNORE INTO reddatabase_users VALUES (%s, %s)")
-                #execute sql statement
-                cursor.execute(sql, ("vimig",
-                                     2))
-                # cursor.execute(sql, (user['username'],
-                #                     user['karma']))
-        except Exception as e:
-            print e.message
-        finally:
-            pass
+        #create sql statement
+        sql = ("INSERT IGNORE INTO reddatabase_users VALUES (%s, %s)")
+        #execute sql statement
+        cursor.execute(sql, ("vimig",
+                             2))
+        # cursor.execute(sql, (user['username'],
+        #                     user['karma']))
 
     connection.commit()
+    cursor.close()
     connection.close()
 
 def start_script():
