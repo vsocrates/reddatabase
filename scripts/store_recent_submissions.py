@@ -74,8 +74,8 @@ def recent_submissions(subreddit_name):
         #execute sql statement
         cursor.execute(sql, (submission['postid'],
                             submission['username'],
-                            submission['title'],
                             submission['subredditName'],
+                            submission['title'],
                             submission['upvotes'],
                             submission['downvotes'],
                             submission['postType'],
