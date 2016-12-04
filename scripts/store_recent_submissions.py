@@ -70,7 +70,7 @@ def recent_submissions(subreddit_name):
 
     for user in recent_users:
         #create sql statement
-        sql = ("INSERT IGNORE INTO reddatabase_users VALUES (%s, %s)")
+        sql = ("INSERT IGNORE INTO reddatabase_user VALUES (%s, %s)")
         #execute sql statement
         cursor.execute(sql, ("vimig",
                              2))
@@ -92,7 +92,7 @@ def recent_submissions(subreddit_name):
 
     for post in recent_posts:
         #create sql statement
-        sql = ("INSERT INTO reddatabase_" + postType + " VALUES (%s, %s)")
+        sql = ("INSERT INTO reddatabase_" + postType + "post VALUES (%s, %s)")
         #execute sql statement
         cursor.execute(sql, (post['postid'],
                             post['contents']))
