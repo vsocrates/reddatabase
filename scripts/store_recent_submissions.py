@@ -25,7 +25,7 @@ def recent_submissions(subreddit_name):
         ups = round((ratio * submission.score) / (2 * ratio - 1)) if ratio != 0.5 else round(submission.score / 2)
         downs = ups - submission.score
 
-        if submission.url:
+        if submission.selftext:
             postType = 'link'
             post_data = {
                 'postid': submission.id,
@@ -75,22 +75,22 @@ def recent_submissions(subreddit_name):
         cursor.execute(sql, (user['username'],
                             user['karma']))
 
-    # for submission in recent_submissions:
-    #     #create sql statement
-    #     sql = ("INSERT INTO reddatabase_submission (postid, username, subredditName, title, upvotes, downvotes, postType, timesubmitted) VALUES (`%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`)")
-    #     #execute sql statement
-    #     cursor.execute(sql, (submission['postid'],
-    #                         submission['username'],
-    #                         submission['subredditName'],
-    #                         submission['title'],
-    #                         submission['upvotes'],
-    #                         submission['downvotes'],
-    #                         submission['postType'],
-    #                         submission['timeSubmitted']))
+    for submission in recent_submissions:
+        #create sql statement
+        sql = ("INSERT IGNORE INTO reddatabase_submission VALUES (`%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`)")
+        #execute sql statement
+        cursor.execute(sql, (submission['postid'],
+                            submission['username'],
+                            submission['subredditName'],
+                            submission['title'],
+                            submission['upvotes'],
+                            submission['downvotes'],
+                            submission['postType'],
+                            submission['timeSubmitted']))
 
     for post in recent_posts:
         #create sql statement
-        sql = ("INSERT INTO reddatabase_" + postType + "post VALUES (%s, %s)")
+        sql = ("INSERT IGNORE INTO reddatabase_" + postType + "post VALUES (%s, %s)")
         #execute sql statement
         cursor.execute(sql, (post['postid'],
                             post['contents']))
