@@ -58,6 +58,7 @@ def recent_submissions(subreddit_name):
             'postType': postType,
             'timeSubmitted': datetime.datetime.utcfromtimestamp(submission.created_utc)
         }
+	print(submission_data)	
 
         submission.comments.replace_more(limit=0)
         for comment in submission.comments:
