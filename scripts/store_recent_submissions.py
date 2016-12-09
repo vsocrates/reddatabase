@@ -1,6 +1,7 @@
 import praw
 import datetime
 import MySQLdb
+import re
 
 my_user_agent = 'Gafte'
 my_client_id = 'IB4hdXbF1kcsWQ'
@@ -33,7 +34,7 @@ def recent_submissions(subreddit_name):
             postType = 'text'
             post_data = {
                 'postid': submission.id,
-                'contents': submission.selftext
+                'contents': re.sub("[^a-zA-z0-9!@#,/.,#!$%^&*;:{}=-_`~() /]+", "", submission.selftext)
             }
         else:
             postType = 'link'
@@ -44,14 +45,14 @@ def recent_submissions(subreddit_name):
 
         user = reddit.redditor(submission.author.name)
         user_data = {
-            'username': user.name,
+            'username': re.sub("[^a-zA-z0-9!@#,/.,#!$%^&*;:{}=-_`~() /]+", "", user.name),
             'karma': user.link_karma + user.comment_karma
         }
 
         submission_data = {
-            'postid': submission.id, #unicode prefix 'u' may be issue? check database later
-            'username': submission.author.name,
-            'title': submission.title,
+            'postid': submission.id,
+            'username': re.sub("[^a-zA-z0-9!@#,/.,#!$%^&*;:{}=-_`~() /]+", "", submission.author.name),
+            'title': re.sub("[^a-zA-z0-9!@#,/.,#!$%^&*;:{}=-_`~() /]+", "", submission.title),
             'subredditName': subreddit_name,
             'upvotes': ups,
             'downvotes': downs,
@@ -62,17 +63,18 @@ def recent_submissions(subreddit_name):
 
         submission.comments.replace_more(limit=0)
         for comment in submission.comments:
-            comment_data = {
-                'cid': comment.id,
-                'p_cid': submission.id,
-                'postid': submission.id,
-                'text': comment.body,
-                'username': comment.author.name,
-                'score': comment.ups,
-                'commentType': "placeholder",
-                'timeSubmitted': datetime.datetime.utcfromtimestamp(comment.created_utc)
-            }
-            recent_comments.append(comment_data)
+            if hasattr(comment, 'author.name'):  # catch deleted comments
+                comment_data = {
+                    'cid': comment.id,
+                    'p_cid': submission.id,
+                    'postid': submission.id,
+                    'text': re.sub("[^a-zA-z0-9!@#,/.,#!$%^&*;:{}=-_`~() /]+", "", comment.body),
+                    'username': re.sub("[^a-zA-z0-9!@#,/.,#!$%^&*;:{}=-_`~() /]+", "", comment.author.name),
+                    'score': comment.ups,
+                    'commentType': "placeholder",
+                    'timeSubmitted': datetime.datetime.utcfromtimestamp(comment.created_utc)
+                }
+                recent_comments.append(comment_data)
             for reply in comment.replies:
                 recent_comments.append(comment_parser(reply, comment.id, submission.id))
 
@@ -116,6 +118,8 @@ def recent_submissions(subreddit_name):
         cursor.execute(sql, (post['postid'],
                             post['contents']))
 
+    #TODO: sql insert for recent_comments
+
 
     connection.commit()
     cursor.close()
@@ -130,8 +134,8 @@ def comment_parser(root_comment, parent_comment_id, submission_id):
             'cid': root_comment.id,
             'p_cid': parent_comment_id,
             'postid': submission_id,
-            'text': root_comment.body,
-            'username': root_comment.author.name,
+            'text': re.sub("[^a-zA-z0-9!@#,/.,#!$%^&*;:{}=-_`~() /]+", "", root_comment.body),
+            'username': re.sub("[^a-zA-z0-9!@#,/.,#!$%^&*;:{}=-_`~() /]+", "", root_comment.author.name),
             'score': root_comment.ups,
             'commentType': "placeholder",
             'timeSubmitted': datetime.datetime.utcfromtimestamp(root_comment.created_utc)
