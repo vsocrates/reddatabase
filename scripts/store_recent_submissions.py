@@ -9,6 +9,9 @@ my_client_secret = '7uUB8oh9icfrneygPnJUMW1m6Xg'
 #add subreddits to pull from here
 subreddits = ['sweden']
 
+#takes submission data and for all submissions,
+#takes data on comments and users and stores
+#all data in MySQL tables
 def recent_submissions(subreddit_name):
 
     reddit = praw.Reddit(user_agent=my_user_agent,
@@ -18,6 +21,7 @@ def recent_submissions(subreddit_name):
     recent_submissions = []
     recent_posts = []
     recent_users = []
+    recent_comments = []
     counter = 0
 
     for submission in reddit.subreddit(subreddit_name).submissions():
@@ -54,7 +58,23 @@ def recent_submissions(subreddit_name):
             'postType': postType,
             'timeSubmitted': datetime.datetime.utcfromtimestamp(submission.created_utc)
         }
-	print(submission_data)	
+        print(submission_data)
+
+        submission.comments.replace_more(limit=0)
+        for comment in submission.comments:
+            comment_data = {
+                'cid': comment.id,
+                'p_cid': submission.id,
+                'postid': submission.id,
+                'text': comment.body,
+                'username': comment.author.name,
+                'score': comment.ups,
+                'commentType': "placeholder",
+                'timeSubmitted': datetime.datetime.utcfromtimestamp(comment.created_utc)
+            }
+            recent_comments.append(comment_data)
+            for reply in comment.replies:
+                recent_comments.append(comment_parser(reply, comment.id, submission.id))
 
         recent_submissions.append(submission_data)
         recent_posts.append(post_data)
@@ -101,6 +121,30 @@ def recent_submissions(subreddit_name):
     cursor.close()
     connection.close()
 
+#Helper method for parsing through chains of comments
+def comment_parser(root_comment, parent_comment_id, submission_id):
+
+    comment_list = []
+    if hasattr(root_comment, 'author.name'): #catch deleted comments
+        comment_data = {
+            'cid': root_comment.id,
+            'p_cid': parent_comment_id,
+            'postid': submission_id,
+            'text': root_comment.body,
+            'username': root_comment.author.name,
+            'score': root_comment.ups,
+            'commentType': "placeholder",
+            'timeSubmitted': datetime.datetime.utcfromtimestamp(root_comment.created_utc)
+        }
+        comment_list.append(comment_data)
+    for comment in root_comment.replies:
+        comment_list.append(comment_parser(comment,root_comment.id,submission_id))
+
+    return comment_list
+
+#iterates through list of requested subreddits
+# and puts data on submissions, comments, and
+# users into MySQL tables
 def start_script():
     for subreddit in subreddits:
         recent_submissions(subreddit)
