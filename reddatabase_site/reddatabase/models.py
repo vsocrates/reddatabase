@@ -5,7 +5,6 @@ from django.db import models
 class submission(models.Model):
 	postid = models.CharField(max_length=6, primary_key=True)
 	username = models.CharField(max_length=20)
-	subredditName = models.CharField(max_length=20)
 	title = models.CharField(max_length=300)
 	upvotes = models.IntegerField()
 	downvotes = models.IntegerField()
