@@ -17,7 +17,7 @@ def extrainfo(request, country_name):
 
     number_moderators1 =  number_moderators(country_name)
     avg_upvotes1 = avg_upvotes(country_name)
-    comments_per_post1 = comments_per_post(country_name)
+    comments_per_post1 = ""# comments_per_post(country_name)
     activity_over_time1 = activity_over_time(country_name)
     number_linkposts1 = number_linkposts(country_name)
     number_textposts1 = number_textposts(country_name)
@@ -47,28 +47,31 @@ def avg_upvotes(countryName):
 
 def comments_per_post(countryName):
         with connection.cursor() as cursor:
-		cursor.execute("SELECT AVG(count) FROM (SELECT COUNT(C) as count FROM reddatabase_comment C, reddatabase_comment_replied_submission S, reddatabase_submission_hasa_subreddit R WHERE S.cid = C.cid AND S.postid = R.postid AND R.subredditName = '" + countryName +  "' GROUP BY S.postid)")
+		cursor.execute("SELECT AVG(count) FROM (SELECT COUNT(C) as count FROM reddatabase_comment C, reddatabase_comment_replied_submission S, reddatabase_submission_hasa_subreddit R WHERE S.cid = C.cid AND S.postid = R.postid AND R.subredditName = '" + countryName +  "' GROUP BY S.postid) as chocula")
                 rows = cursor.fetchall()
         return rows
 
 def activity_over_time(countryName):
 	#add in a for loop that populates a list	
 
+	activityLevels = []
 	for hourNum in range(0, 24):
 		if(hourNum < 9):
 			low_hour_string = "0" + str(hourNum)
         		high_hour_string = "0" + str(hourNum + 1)
     		elif(hourNum == 9):
         		low_hour_string = "0" + str(hourNum)
-        		high_hour_string = str(hourNum)
+        		high_hour_string = str(hourNum + 1)
     		else:
         		low_hour_string = str(hourNum)
-        		high_hour_string = str(hourNum)
+        		high_hour_string = str(hourNum + 1)
     		low_hour = "2016-12-08 " + low_hour_string + ":00:00"
     		high_hour = "2016-12-08 " + high_hour_string + ":00:00"
+		print(low_hour)
+		print(high_hour)
 
         	with connection.cursor() as cursor:
-			cursor.execute("SELECT COUNT(*) FROM redattabase_submisison_hasa_subreddit R, reddatabase_submission S WHERE R.subredditName = " + countryName + " AND R.postid = S.postid AND S.timeSubmitted >= " + low_hour_string + " AND S.timeSubmitted <" + high_hour_string)
+			cursor.execute("SELECT COUNT(*) FROM reddatabase_submission_hasa_subreddit R, reddatabase_submission S WHERE R.subredditName = '" + countryName + "' AND R.postid = S.postid AND S.timeSubmitted >= '" + low_hour_string + "' AND S.timeSubmitted <'" + high_hour_string + "'")
 			rows = cursor.fetchall()
 			activityLevels.append(rows)
 	
