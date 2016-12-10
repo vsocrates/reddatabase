@@ -17,7 +17,6 @@ class Comment(models.Model):
 	p_cid = models.CharField(max_length=6)
 	postid = models.CharField(max_length=6)
 	text = models.CharField(max_length=40000)
-	username = models.CharField(max_length=20)
 	score = models.IntegerField()
 	commentType = models.IntegerField()
 	timeSubmitted = models.DateTimeField()
