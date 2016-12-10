@@ -2823,7 +2823,8 @@
 
 L.geoJSON(geojsonFeatures, {
 	onEachFeature: function(feature, featureLayer) {
-			var div = '<div style="width: 200px; height: 200px;"><svg id = "test"><svg/></div>';
+			var div = '<div style="width: 200px; height: 200px;"><svg id = "test"><svg/><p id = "test2">{{num_mods}}</p></div>'
+
 			featureLayer.bindPopup(div);
 			//featureLayer.openPopup();
 
