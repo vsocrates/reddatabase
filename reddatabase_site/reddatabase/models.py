@@ -57,4 +57,11 @@ class subreddit_hasa_user(models.Model):
 	class Meta:
 		unique_together = (("subredditName", "username"),)
 
+class Comment_hasa_submission(models.Model):
+	cid = models.CharField(max_length=6)
+	postid = models.CharField(max_length=6)
+
+	class Meta:
+		unique_together = (("cid", "postid"),)
+
 #your models here.

@@ -9,14 +9,14 @@ from collections import namedtuple
 def index(request):
 	
 	template = loader.get_template('reddatabase/index.html')
-	
+	context = {}	
 	return HttpResponse(template.render(context, request))
 
 def extrainfo(request, country_name):
-    num_mods = number_moderators(country_name)
-    template = loader.get_template('reddatabase/country_page.html')
-    context = {'num_mods':num_mods}
-    return HttpResponse(template.render(context, request))
+	num_mods = number_moderators(country_name)
+	template = loader.get_template('reddatabase/country_page.html')
+	context = {'num_mods':num_mods}
+	return HttpResponse(template.render(context, request))
 
 def number_moderators(countryName):
 	with connection.cursor() as cursor:
@@ -53,8 +53,8 @@ def activity_over_time(countryName):
     		high_hour = "2016-12-08 " + high_hour_string + ":00:00"
 
         	with connection.cursor() as cursor:
-		cursor.execute("SELECT COUNT(*) FROM redattabase_submisison_hasa_subreddit R, reddatabase_submission S WHERE R.subredditName = '" + countryName + "' AND R.postid = S.postid AND S.timeSubmitted >= " + low_hour_string + " AND S.timeSubmitted <" + high_hour_string)
-                	rows = cursor.fetchall()
+			cursor.execute("SELECT COUNT(*) FROM redattabase_submisison_hasa_subreddit R, reddatabase_submission S WHERE R.subredditName = " + countryName + " AND R.postid = S.postid AND S.timeSubmitted >= " + low_hour_string + " AND S.timeSubmitted <" + high_hour_string)
+			rows = cursor.fetchall()
 			activityLevels.append(rows)
 	
 	return activityLevels

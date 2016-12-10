@@ -8,7 +8,7 @@ my_client_id = 'IB4hdXbF1kcsWQ'
 my_client_secret = '7uUB8oh9icfrneygPnJUMW1m6Xg'
 
 # add subreddits to pull from here
-subreddits = ['canada', 'sweden']
+subreddits = ['sweden']
 
 # takes submission data and for all submissions,
 # takes data on comments and users and stores
@@ -57,12 +57,14 @@ def recent_submissions(subreddit_name):
 
         if submission.selftext:
             postType = 'text'
+	    postTypeValue = 1
             post_data = {
                 'postid': submission.id,
                 'contents': re.sub("[^a-zA-z0-9!@#,/.,#!$%^&*;:{}=-_`~() /]+", "", submission.selftext)
             }
         else:
             postType = 'link'
+	    postTypeValue = 0
             post_data = {
                 'postid': submission.id,
                 'contents': submission.url
@@ -81,7 +83,7 @@ def recent_submissions(subreddit_name):
             'subredditName': subreddit_name,
             'upvotes': ups,
             'downvotes': downs,
-            'postType': postType,
+            'postType': postTypeValue,
             'timeSubmitted': datetime.datetime.utcfromtimestamp(submission.created_utc)
         }
         print(submission_data)
@@ -132,7 +134,7 @@ def recent_submissions(subreddit_name):
                              submission['upvotes'],
                              submission['downvotes'],
                              submission['postType'],
-                             submission['timeSubmitted']))
+                            submission['timeSubmitted']))
         # create sql statement
         sql = ("INSERT IGNORE INTO reddatabase_submission_hasa_subreddit VALUES (%s, %s)")
         # execute sql statement
