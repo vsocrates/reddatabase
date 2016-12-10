@@ -47,7 +47,7 @@ def activity_over_time():
     		high_hour = "2016-12-08 " + high_hour_string + ":00:00"
 
         	with connection.cursor() as cursor:
-			cursor.execute("SELECT COUNT(*) FROM redattabase_submisison_hasa_subreddit R, reddatabase_submission S WHERE R.subredditName = " + countryName + " AND R.postid = S.postid AND S.timeSubmitted >= " + low_hour_string + " AND S.timeSubmitted <" + high_hour_string)
+			cursor.execute("SELECT COUNT(*) FROM redattabase_submission_hasa_subreddit R, reddatabase_submission S WHERE R.subredditName = " + countryName + " AND R.postid = S.postid AND S.timeSubmitted >= " + low_hour_string + " AND S.timeSubmitted <" + high_hour_string)
                 	rows = cursor.fetchall()
 			activityLevels.append(rows)
 	
