@@ -14,6 +14,7 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 def extrainfo(request, country_name):
+<<<<<<< HEAD
 
     number_moderators1 =  number_moderators(country_name)
     avg_upvotes1 = avg_upvotes(country_name)
@@ -35,7 +36,7 @@ def extrainfo(request, country_name):
 
 def number_moderators(countryName):
 	with connection.cursor() as cursor:
-		cursor.execute("SELECT COUNT(*) FROM reddatabase_user U, reddatabase_subreddit_hasa_user S WHERE U.username = S.username AND S.subredditName = '" + countryName + "'")
+		cursor.execute("SELECT COUNT(*) FROM reddatabase_subreddit_hasa_user S WHERE S.subredditName = '" + countryName + "'")
 		rows = cursor.fetchall()
 	return rows
 
