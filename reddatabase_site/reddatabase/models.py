@@ -17,7 +17,6 @@ class Comment(models.Model):
 	p_cid = models.CharField(max_length=6)
 	postid = models.CharField(max_length=6)
 	text = models.CharField(max_length=40000)
-	username = models.CharField(max_length=20)
 	score = models.IntegerField()
 	commentType = models.IntegerField()
 	timeSubmitted = models.DateTimeField()
@@ -51,5 +50,12 @@ class Comment_hasa_user(models.Model):
 
 	class Meta:
 		unique_together = (("cid", "username"),)
+
+class subreddit_hasa_user(models.Model):
+	subredditName = models.CharField(max_length=20)
+	username = models.CharField(max_length=20)
+
+	class Meta:
+		unique_together = (("subredditName", "username"),)
 
 #your models here.
