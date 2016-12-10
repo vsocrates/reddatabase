@@ -79,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
 	'NAME': 'RDB',
 	'USER': 'root',
-	'PASSWORD': 'reddatabase',
+	'PASSWORD': 'yahoo321',
 	'HOST': '127.0.0.1',
 	'PORT': '3306',
     }

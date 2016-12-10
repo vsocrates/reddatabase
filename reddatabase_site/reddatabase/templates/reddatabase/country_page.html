@@ -1,0 +1,29 @@
+</<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<script src="http://dimplejs.org/dist/dimple.v2.2.0.min.js"></script>
+</head>
+<body>
+
+This is data: {{num_mods}}
+<div id="chartContainer">
+  
+  
+  <script type="text/javascript">
+    var svg = dimple.newSvg("#chartContainer", 590, 400);
+    d3.tsv("/data/example_data.tsv", function (data) {
+      var myChart = new dimple.chart(svg, data);
+      myChart.setBounds(60, 30, 510, 330)
+      myChart.addCategoryAxis("x", ["Price Tier", "Channel"]);
+      myChart.addMeasureAxis("y", "Unit Sales");
+      myChart.addSeries("Channel", dimple.plot.bar);
+      myChart.addLegend(65, 10, 510, 20, "right");
+      myChart.draw();
+    });
+  </script>
+</div>
+
+</body>
+</html>
