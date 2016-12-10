@@ -10,6 +10,9 @@
 
   <!-- Load Esri Leaflet from CDN -->
   <script src="https://unpkg.com/esri-leaflet@2.0.6"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v2.2.0.min.js"></script>
+  
 
   <style>
     body { margin:0; padding:0; }
@@ -35,6 +38,7 @@
 <div id="map"></div>
 
 <script>
+
   var map = L.map('map').setView([60.128161,18.643501], 5);
   var layer = L.esri.basemapLayer('DarkGray').addTo(map);
   var layerLabels;
@@ -2817,7 +2821,31 @@
   ]
 }
 
-L.geoJSON(geojsonFeatures).addTo(map);
+L.geoJSON(geojsonFeatures, {
+	onEachFeature: function(feature, featureLayer) {
+			var div = '<div style="width: 200px; height: 200px;"><svg id = "test"><svg/></div>';
+			featureLayer.bindPopup(div);
+			//featureLayer.openPopup();
+
+		featureLayer.on('click', function(e) {
+			var svg = dimple.newSvg("#test", 590, 400);
+			console.log("right before printing data");
+		    d3.tsv("/static/reddatabase/example_data.tsv", function (data) {
+		      var myChart = new dimple.chart(svg, data);
+		      myChart.setBounds(60, 30, 510, 330)
+		      myChart.addCategoryAxis("x", ["Price Tier", "Channel"]);
+		      myChart.addMeasureAxis("y", "Unit Sales");
+		      myChart.addSeries("Channel", dimple.plot.bar);
+		      myChart.addLegend(65, 10, 510, 20, "right");
+		      myChart.draw();
+		    });
+
+
+
+		});
+
+	}
+}).addTo(map);
 
 </script>
 
