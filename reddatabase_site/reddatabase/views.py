@@ -14,13 +14,14 @@ def index(request):
 
 def extrainfo(request, country_name):
 	num_mods = number_moderators(country_name)
+	print(num_mods)
 	template = loader.get_template('reddatabase/country_page.html')
 	context = {'num_mods':num_mods}
 	return HttpResponse(template.render(context, request))
 
 def number_moderators(countryName):
 	with connection.cursor() as cursor:
-		cursor.execute("SELECT COUNT(*) FROM reddatabase_user U, reddatabase_subreddit_hasa_user S WHERE U.username = S.username AND S.subredditName = '" + countryName + "'")
+		cursor.execute("SELECT COUNT(*) FROM reddatabase_subreddit_hasa_user S WHERE S.subredditName = '" + countryName + "'")
 		rows = cursor.fetchall()
 	return rows
 

@@ -36,13 +36,20 @@ def recent_submissions(subreddit_name):
 
     # get moderators of subreddit
     for moderator in reddit.subreddit(subreddit_name).moderator.__iter__():
+	print(moderator.name)
         moderator_data = {
             'subredditName': subreddit_name,
             'username': moderator.name
         }
-
+	moderator_user_data = {
+		'username': moderator.name,
+		'karma': moderator.link_karma + moderator.comment_karma
+	}
+	moderators.append(moderator_data)
+	recent_users.append(moderator_user_data)
+    print(moderators)
     # Takes in submissions from each hour of 12/8/16 using unix epoch time boundaries
-    for hour in range(0, 24):
+    for hour in range(0, 2):
         for submission in (reddit.subreddit(subreddit_name).submissions(start=start_time, end=end_time)):
             total_submissions.append(submission)
         start_time = end_time + 1
@@ -103,13 +110,11 @@ def recent_submissions(subreddit_name):
                 }
                 recent_comments.append(comment_data)
             for reply in comment.replies:
-                recent_comments.append(comment_parser(reply, comment.id, submission.id))
+                recent_comments.extend(comment_parser(reply, comment.id, submission.id))
 
-    recent_submissions.append(submission_data)
-    recent_posts.append(post_data)
-    recent_users.append(user_data)
-    recent_users.append(user_data)
-    moderators.append(moderator_data)
+        recent_submissions.append(submission_data)
+        recent_posts.append(post_data)
+        recent_users.append(user_data)
 
     # Create connection
     connection = MySQLdb.connect("127.0.0.1", "root", "reddatabase", "RDB")
@@ -122,7 +127,7 @@ def recent_submissions(subreddit_name):
         # execute sql statement
         cursor.execute(sql, (user['username'],
                              user['karma']))
-
+    
     #stores submission info
     for submission in recent_submissions:
         # create sql statement
@@ -202,7 +207,7 @@ def comment_parser(root_comment, parent_comment_id, submission_id):
         }
         comment_list.append(comment_data)
     for comment in root_comment.replies:
-        comment_list.append(comment_parser(comment, root_comment.id, submission_id))
+        comment_list.extend(comment_parser(comment, root_comment.id, submission_id))
 
     return comment_list
 

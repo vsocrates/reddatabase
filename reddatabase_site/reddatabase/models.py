@@ -51,8 +51,8 @@ class Comment_hasa_user(models.Model):
 		unique_together = (("cid", "username"),)
 
 class subreddit_hasa_user(models.Model):
-	subredditName = models.CharField(max_length=20, primary_key=True)
-	username = models.CharField(max_length=20)
+	subredditName = models.CharField(max_length=20)
+	username = models.CharField(max_length=20, primary_key=True)
 
 	class Meta:
 		unique_together = (("subredditName", "username"),)
