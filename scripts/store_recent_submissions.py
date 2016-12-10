@@ -9,6 +9,9 @@ my_client_secret = '7uUB8oh9icfrneygPnJUMW1m6Xg'
 
 # add subreddits to pull from here
 subreddits = ['canada', 'sweden']
+#change start/end time for first hour in 24 hour data pull here
+start_time = 1481155200
+end_time = 1481158799
 
 
 # takes submission data and for all submissions,
@@ -34,8 +37,6 @@ def recent_submissions(subreddit_name):
         }
 
     # Takes in submissions from each hour of 12/8/16 using unix epoch time boundaries
-    start_time = 1481155200
-    end_time = 1481158799
     for hour in range(0, 24):
         for submission in (reddit.subreddit(subreddit_name).submissions(start=start_time, end=end_time)):
             total_submissions.append(submission)
@@ -128,7 +129,7 @@ def recent_submissions(subreddit_name):
                              submission['postType'],
                              submission['timeSubmitted']))
         # create sql statement
-        sql = ("INSERT IGNORE INTO submission_hasa_subreddit VALUES (%s, %s)")
+        sql = ("INSERT IGNORE INTO reddatabase_submission_hasa_subreddit VALUES (%s, %s)")
         # execute sql statement
         cursor.execute(sql, (comment['postid'],
                              comment['subredditName']))
@@ -154,7 +155,7 @@ def recent_submissions(subreddit_name):
                              comment['commentType'],
                              comment['timeSubmitted']))
         # create sql statement
-        sql = ("INSERT IGNORE INTO Comment_hasa_user VALUES (%s, %s)")
+        sql = ("INSERT IGNORE INTO reddatabase_Comment_hasa_user VALUES (%s, %s)")
         # execute sql statement
         cursor.execute(sql, (comment['cid'],
                              comment['username']))
@@ -162,7 +163,7 @@ def recent_submissions(subreddit_name):
     # stores subreddit_has info
     for moderator in moderators:
         # create sql statement
-        sql = ("INSERT IGNORE INTO subreddit_hasa_user VALUES (%s, %s)")
+        sql = ("INSERT IGNORE INTO reddatabase_subreddit_hasa_user VALUES (%s, %s)")
         # execute sql statement
         cursor.execute(sql, (comment['subredditName'],
                              comment['username']))
