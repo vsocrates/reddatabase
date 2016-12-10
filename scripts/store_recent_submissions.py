@@ -9,10 +9,6 @@ my_client_secret = '7uUB8oh9icfrneygPnJUMW1m6Xg'
 
 # add subreddits to pull from here
 subreddits = ['canada', 'sweden']
-#change start/end time for first hour in 24 hour data pull here
-start_time = 1481155200
-end_time = 1481158799
-
 
 # takes submission data and for all submissions,
 # takes data on comments and users and stores
@@ -26,8 +22,17 @@ def recent_submissions(subreddit_name):
     recent_posts = []
     recent_users = []
     recent_comments = []
+    subreddit_info = []
     moderators = []
     total_submissions = []
+
+    start_time = 1481155200
+    end_time = 1481158799
+
+    subreddit_info = {
+        'subredditName': subreddit_name,
+        'subscribers': reddit.subreddit(subreddit_name).subscribers
+    }
 
     # get moderators of subreddit
     for moderator in reddit.subreddit(subreddit_name).moderator.__iter__():
@@ -42,7 +47,7 @@ def recent_submissions(subreddit_name):
             total_submissions.append(submission)
         start_time = end_time + 1
         end_time += 3600
-        print(hour, start_time, end_time, total_submissions.__len__())
+        print(hour, total_submissions.__len__())
 
 
     for submission in total_submissions:
@@ -131,8 +136,8 @@ def recent_submissions(subreddit_name):
         # create sql statement
         sql = ("INSERT IGNORE INTO reddatabase_submission_hasa_subreddit VALUES (%s, %s)")
         # execute sql statement
-        cursor.execute(sql, (comment['postid'],
-                             comment['subredditName']))
+        cursor.execute(sql, (submission['postid'],
+                             submission['subredditName']))
 
     #stores post info
     for post in recent_posts:
@@ -165,8 +170,14 @@ def recent_submissions(subreddit_name):
         # create sql statement
         sql = ("INSERT IGNORE INTO reddatabase_subreddit_hasa_user VALUES (%s, %s)")
         # execute sql statement
-        cursor.execute(sql, (comment['subredditName'],
-                             comment['username']))
+        cursor.execute(sql, (moderator['subredditName'],
+                             moderator['username']))
+
+    # create sql statement
+    sql = ("INSERT IGNORE INTO reddatabase_subreddit VALUES (%s, %s)")
+    # execute sql statement
+    cursor.execute(sql, (subreddit_info['subredditName'],
+                         subreddit_info['subscribers']))
 
     connection.commit()
     cursor.close()
