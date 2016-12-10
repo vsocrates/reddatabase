@@ -10,7 +10,6 @@ my_client_secret = '7uUB8oh9icfrneygPnJUMW1m6Xg'
 # add subreddits to pull from here
 subreddits = ['canada', 'sweden']
 
-
 # takes submission data and for all submissions,
 # takes data on comments and users and stores
 # all data in MySQL tables
@@ -23,8 +22,17 @@ def recent_submissions(subreddit_name):
     recent_posts = []
     recent_users = []
     recent_comments = []
+    subreddit_info = []
     moderators = []
     total_submissions = []
+
+    start_time = 1481155200
+    end_time = 1481158799
+
+    subreddit_info = {
+        'subredditName': subreddit_name,
+        'subscribers': reddit.subreddit(subreddit_name).subscribers
+    }
 
     # get moderators of subreddit
     for moderator in reddit.subreddit(subreddit_name).moderator.__iter__():
@@ -34,14 +42,12 @@ def recent_submissions(subreddit_name):
         }
 
     # Takes in submissions from each hour of 12/8/16 using unix epoch time boundaries
-    start_time = 1481155200
-    end_time = 1481158799
     for hour in range(0, 24):
         for submission in (reddit.subreddit(subreddit_name).submissions(start=start_time, end=end_time)):
             total_submissions.append(submission)
         start_time = end_time + 1
         end_time += 3600
-        print(hour, start_time, end_time, total_submissions.__len__())
+        print(hour, total_submissions.__len__())
 
 
     for submission in total_submissions:
@@ -128,10 +134,10 @@ def recent_submissions(subreddit_name):
                              submission['postType'],
                              submission['timeSubmitted']))
         # create sql statement
-        sql = ("INSERT IGNORE INTO submission_hasa_subreddit VALUES (%s, %s)")
+        sql = ("INSERT IGNORE INTO reddatabase_submission_hasa_subreddit VALUES (%s, %s)")
         # execute sql statement
-        cursor.execute(sql, (comment['postid'],
-                             comment['subredditName']))
+        cursor.execute(sql, (submission['postid'],
+                             submission['subredditName']))
 
     #stores post info
     for post in recent_posts:
@@ -154,7 +160,7 @@ def recent_submissions(subreddit_name):
                              comment['commentType'],
                              comment['timeSubmitted']))
         # create sql statement
-        sql = ("INSERT IGNORE INTO Comment_hasa_user VALUES (%s, %s)")
+        sql = ("INSERT IGNORE INTO reddatabase_Comment_hasa_user VALUES (%s, %s)")
         # execute sql statement
         cursor.execute(sql, (comment['cid'],
                              comment['username']))
@@ -162,10 +168,16 @@ def recent_submissions(subreddit_name):
     # stores subreddit_has info
     for moderator in moderators:
         # create sql statement
-        sql = ("INSERT IGNORE INTO subreddit_hasa_user VALUES (%s, %s)")
+        sql = ("INSERT IGNORE INTO reddatabase_subreddit_hasa_user VALUES (%s, %s)")
         # execute sql statement
-        cursor.execute(sql, (comment['subredditName'],
-                             comment['username']))
+        cursor.execute(sql, (moderator['subredditName'],
+                             moderator['username']))
+
+    # create sql statement
+    sql = ("INSERT IGNORE INTO reddatabase_subreddit VALUES (%s, %s)")
+    # execute sql statement
+    cursor.execute(sql, (subreddit_info['subredditName'],
+                         subreddit_info['subscribers']))
 
     connection.commit()
     cursor.close()
