@@ -37,28 +37,28 @@ class textpost(models.Model):
 	content = models.CharField(max_length=40000)
 
 class submission_hasa_subreddit(models.Model):
-	postid = models.CharField(max_length=6)
+	postid = models.CharField(max_length=6, primary_key=True)
 	subredditName = models.CharField(max_length=20)
 
 	class Meta:
 		unique_together = (("postid", "subredditName"),)
 
 class Comment_hasa_user(models.Model):
-	cid = models.CharField(max_length=6)
+	cid = models.CharField(max_length=6, primary_key=True)
 	username = models.CharField(max_length=20)
 
 	class Meta:
 		unique_together = (("cid", "username"),)
 
 class subreddit_hasa_user(models.Model):
-	subredditName = models.CharField(max_length=20)
+	subredditName = models.CharField(max_length=20, primary_key=True)
 	username = models.CharField(max_length=20)
 
 	class Meta:
 		unique_together = (("subredditName", "username"),)
 
 class Comment_hasa_submission(models.Model):
-	cid = models.CharField(max_length=6)
+	cid = models.CharField(max_length=6, primary_key=True)
 	postid = models.CharField(max_length=6)
 
 	class Meta:
