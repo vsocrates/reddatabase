@@ -7,16 +7,31 @@ from collections import namedtuple
 
 
 def index(request):
-	
-	template = loader.get_template('reddatabase/index.html')
-	context = {}	
-	return HttpResponse(template.render(context, request))
+
+    template = loader.get_template('reddatabase/index.html')
+    context = {}
+
+    return HttpResponse(template.render(context, request))
 
 def extrainfo(request, country_name):
-	num_mods = number_moderators(country_name)
-	template = loader.get_template('reddatabase/country_page.html')
-	context = {'num_mods':num_mods}
-	return HttpResponse(template.render(context, request))
+
+    number_moderators1 =  number_moderators(country_name)
+    avg_upvotes1 = avg_upvotes(country_name)
+    comments_per_post1 = comments_per_post(country_name)
+    activity_over_time1 = activity_over_time(country_name)
+    number_linkposts1 = number_linkposts(country_name)
+    number_textposts1 = number_textposts(country_name)
+
+    template = loader.get_template('reddatabase/country_page.html')
+    context = { 'number_moderators':number_moderators1,
+                'avg_upvotes':avg_upvotes1,
+                'comments_per_post':comments_per_post1,
+                'activity_over_time':activity_over_time1,
+                'number_textposts':number_textposts1,
+                'number_linkposts':number_linkposts1,
+        }
+
+    return HttpResponse(template.render(context, request))
 
 def number_moderators(countryName):
 	with connection.cursor() as cursor:

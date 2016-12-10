@@ -7,23 +7,53 @@
 </head>
 <body>
 
-This is data: {{num_mods}}
-<div id="chartContainer">
-  
-  
-  <script type="text/javascript">
-    var svg = dimple.newSvg("#chartContainer", 590, 400);
-    d3.tsv("/data/example_data.tsv", function (data) {
-      var myChart = new dimple.chart(svg, data);
-      myChart.setBounds(60, 30, 510, 330)
-      myChart.addCategoryAxis("x", ["Price Tier", "Channel"]);
-      myChart.addMeasureAxis("y", "Unit Sales");
-      myChart.addSeries("Channel", dimple.plot.bar);
-      myChart.addLegend(65, 10, 510, 20, "right");
-      myChart.draw();
-    });
-  </script>
-</div>
+	This is number_moderators: {{number_moderators}}
+	This is avg_upvotes: {{avg_upvotes}}
+	This is comments_per_post: {{comments_per_post}}
+	This is activity_over_time: {{activity_over_time}}
+	This is number_textposts: {{number_textposts}}
+	This is number_linkposts: {{number_linkposts}}
+
+	<div id="chartContainer">
+	  
+		<script type="text/javascript">
+/*			var svg = dimple.newSvg("#chartContainer", 590, 400);
+		
+			var data = {
+
+				"Time":[1,2,3,4,5,6,7,8,9,10,11,12],
+				"num_posts":[4,12,7,3,13,9,10,3,0,1,4,12]
+			}
+			/*var data = [
+				{"Time":1, "num_posts":4, "Owner":"Aperture"},
+				{"Time":2, "num_posts":12, "Owner":"Aperture"},
+				{"Time":3, "num_posts":7, "Owner":"Aperture"},
+				{"Time":4, "num_posts":3, "Owner":"Aperture"},
+				{"Time":5, "num_posts":13, "Owner":"Aperture"},
+				{"Time":6, "num_posts":9, "Owner":"Aperture"},
+				{"Time":7, "num_posts":10, "Owner":"Aperture"},
+				{"Time":8, "num_posts":3, "Owner":"Aperture"},
+				{"Time":9, "num_posts":0, "Owner":"Aperture"},
+				{"Time":10, "num_posts":1, "Owner":"Aperture"},
+				{"Time":11, "num_posts":4, "Owner":"Aperture"},
+				{"Time":12, "num_posts":12, "Owner":"Aperture"},
+
+
+			];*/
+/*			data = dimple.filterData(data, "Owner", "Aperture")
+			console.log(data)
+			var myChart = new dimple.chart(svg, data);
+			console.log(data)
+			myChart.setBounds(60, 30, 505, 305);
+			var x = myChart.addCategoryAxis("x","Time");
+			console.log('first one!')
+//			x.addOrderRule("Date");
+			myChart.addMeasureAxis("y", "num_posts", null);
+			console.log('second one!')
+	      	myChart.draw();
+		</script>
+
+	</div>
 
 </body>
 </html>
