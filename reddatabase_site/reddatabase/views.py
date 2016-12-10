@@ -3,6 +3,13 @@ from django.http import HttpResponse
 from django.template import loader
 
 from django.db import connection
+from collections import namedtuple
+
+def namedtuplefetchall(cursor):
+    "Return all rows from a cursor as a namedtuple"
+    desc = cursor.description
+    nt_result = namedtuple('Result', [col[0] for col in desc])
+    return [nt_result(*row) for row in cursor.fetchall()]
 
 def index(request):
 	num_mods = number_moderators()
@@ -12,8 +19,8 @@ def index(request):
 
 def number_moderators():
 	with connection.cursor() as cursor:
-		cursor.execute("SELECT COUNT(*) FROM reddatabase_user U, subreddit_hasa_user S WHERE U.username = S.username AND S.subredditName = countryName")
-		rows = cursor.namedtuplefetchall()
+		cursor.execute("SELECT COUNT(*) FROM reddatabase_user U, reddatabase_subreddit_hasa_user S WHERE U.username = S.username AND S.subredditName = 'sweden'")
+		rows = cursor.fetchall()
 	return rows
 
 # Create your views here.i

@@ -52,4 +52,11 @@ class Comment_hasa_user(models.Model):
 	class Meta:
 		unique_together = (("cid", "username"),)
 
+class subreddit_hasa_user(models.Model):
+	subredditName = models.CharField(max_length=20)
+	username = models.CharField(max_length=20)
+
+	class Meta:
+		unique_together = (("subredditName", "username"),)
+
 #your models here.
