@@ -8,7 +8,8 @@ my_client_id = 'IB4hdXbF1kcsWQ'
 my_client_secret = '7uUB8oh9icfrneygPnJUMW1m6Xg'
 
 # add subreddits to pull from here
-subreddits = ['de','india', 'argentina', 'australia', 'canada', 'france', 'sweden', 'russia']
+#de','india', 'argentina', 'australia', 'canada', 'france', 'sweden', 'russia'
+subreddits = ['ukpolitics']
 
 # takes submission data and for all submissions,
 # takes data on comments and users and stores
