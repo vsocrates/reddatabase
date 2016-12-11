@@ -2826,7 +2826,7 @@ L.geoJSON(geojsonFeatures, {
 		featureLayer.on('click', function(e) {
 			//localhost:8000
 			//kevin-tower.STUDENT.CWRU.edu:8080
-			var div = '<div style="width: 20px; height: 60px;"><p valign="middle" align="center">' + feature.properties.name + '</p><form align="center" action="http://localhost:8000/reddatabase/extrainfo/'+ feature.properties.name +'"><input type="submit" value="Learn More!" /></form></div>'
+			var div = '<div style="width: 20px; height: 60px;"><p valign="middle" align="center">' + feature.properties.name + '</p><form align="center" action="http://kevin-tower.STUDENT.CWRU.edu:8080/reddatabase/extrainfo/'+ feature.properties.name +'"><input type="submit" value="Learn More!" /></form></div>'
 	
 			
 			featureLayer.bindPopup(div);
