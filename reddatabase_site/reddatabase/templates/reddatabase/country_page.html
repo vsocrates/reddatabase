@@ -35,7 +35,7 @@
 			];
 			*/
 			var svg = dimple.newSvg("#chartContainer", 590, 400);
-
+			svg.append("text").attr("x", (svg[0][0].clientWidth / 2)).attr("y", 14).attr("text-anchor", "middle").style("font-size", "16px").style("font-weight", "bold").text("{{country_name}}" + "'s Activity Over Time");
 			var data = {{activity_over_time}};
 			var activity_over_time2 = [];
 			
@@ -50,6 +50,9 @@
 			
 			var myChart = new dimple.chart(svg, activity_over_time2);			
 			myChart.setBounds(60, 30, 505, 305);
+
+
+
 			var x = myChart.addCategoryAxis("x","Time");
 //			x.addOrderRule("Date");
 myChart.addMeasureAxis("y", "Number of Posts");
@@ -80,7 +83,7 @@ myChart.draw();
 
 
 		var svg = dimple.newSvg("#chartContainer2", 590, 400);
-		
+		svg.append("text").attr("x", (svg[0][0].clientWidth / 2)).attr("y", 14).attr("text-anchor", "middle").style("font-size", "16px").style("font-weight", "bold").text("{{country_name}}" + "'s Ratio of Text and Link Posts");
 		var myChart = new dimple.chart(svg, text_and_link_posts);
 		myChart.setBounds(20, 20, 460, 360)
 		myChart.addMeasureAxis("p", "numPosts");
