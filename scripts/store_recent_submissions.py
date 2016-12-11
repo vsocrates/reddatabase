@@ -8,7 +8,7 @@ my_client_id = 'IB4hdXbF1kcsWQ'
 my_client_secret = '7uUB8oh9icfrneygPnJUMW1m6Xg'
 
 # add subreddits to pull from here
-subreddits = ['sweden']
+subreddits = ['de']
 
 # takes submission data and for all submissions,
 # takes data on comments and users and stores
@@ -48,7 +48,7 @@ def recent_submissions(subreddit_name):
         recent_users.append(moderator_user_data)
 
     # Takes in submissions from each hour of 12/8/16 using unix epoch time boundaries
-    for hour in range(0, 5):
+    for hour in range(0, 24):
         for submission in (reddit.subreddit(subreddit_name).submissions(start=start_time, end=end_time)):
             total_submissions.append(submission)
         start_time = end_time + 1
