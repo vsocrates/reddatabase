@@ -171,6 +171,11 @@ def recent_submissions(subreddit_name):
         # execute sql statement
         cursor.execute(sql, (comment['cid'],
                              comment['username']))
+        # create sql statement
+        sql = ("INSERT IGNORE INTO reddatabase_Comment_hasa_submission VALUES (%s, %s)")
+        # execute sql statement
+        cursor.execute(sql, (comment['cid'],
+                             comment['postid']))
 
     # stores subreddit_has info
     for moderator in moderators:
