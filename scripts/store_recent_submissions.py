@@ -65,14 +65,16 @@ def recent_submissions(subreddit_name):
             post_type_value = 1
             post_data = {
                 'postid': submission.id,
-                'contents': re.sub("[^a-zA-z0-9!@#,/.,#!$%^&*;:{}=-_`~() /]+", "", submission.selftext)
+                'contents': re.sub("[^a-zA-z0-9!@#,/.,#!$%^&*;:{}=-_`~() /]+", "", submission.selftext),
+                'postType': post_type
             }
         else:
             post_type = 'link'
             post_type_value = 0
             post_data = {
                 'postid': submission.id,
-                'contents': submission.url
+                'contents': submission.url,
+                'postType': post_type
             }
 
         user = reddit.redditor(submission.author.name)
@@ -147,7 +149,7 @@ def recent_submissions(subreddit_name):
     #stores post info
     for post in recent_posts:
         # create sql statement
-        sql = ("INSERT IGNORE INTO reddatabase_" + post_type + "post VALUES (%s, %s)")
+        sql = ("INSERT IGNORE INTO reddatabase_" + post['postType'] + "post VALUES (%s, %s)")
         # execute sql statement
         cursor.execute(sql, (post['postid'],
                              post['contents']))
