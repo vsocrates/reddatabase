@@ -17,7 +17,7 @@ def extrainfo(request, country_name):
 
     if country_name == 'Germany':
         country_name = 'de'
-    else if country_name == 'United Kingdom':
+    elif country_name == 'United Kingdom':
         country_name == 'ukpolitics'
 
     number_moderators1 =  number_moderators(country_name)
@@ -26,8 +26,8 @@ def extrainfo(request, country_name):
     avg_upvotes1 = avg_upvotes(country_name)
     avg_upvotes1 = avg_upvotes1[0][0]
 
-    comments_per_post1 = ""# comments_per_post(country_name)
-    comments_per_post1 = ""#[str(x[0][0]) for x in comments_per_post1]
+    comments_per_post1 = comments_per_post(country_name)
+    comments_per_post1 = str(comments_per_post1[0][0])
 
     activity_over_time1 = activity_over_time(country_name)
     activity_over_time1 = [int(x[0][0]) for x in activity_over_time1]
@@ -40,7 +40,7 @@ def extrainfo(request, country_name):
 
     if country_name == 'de':
         country_name = 'Germany'
-    else if country_name == 'ukpolitics':
+    elif country_name == 'ukpolitics':
         country_name == 'United Kingdom'
 
     template = loader.get_template('reddatabase/country_page.html')
@@ -70,7 +70,7 @@ def avg_upvotes(countryName):
 
 def comments_per_post(countryName):
         with connection.cursor() as cursor:
-		cursor.execute("SELECT AVG(count) FROM (SELECT COUNT(C) as count FROM reddatabase_comment C, reddatabase_comment_replied_submission S, reddatabase_submission_hasa_subreddit R WHERE S.cid = C.cid AND S.postid = R.postid AND R.subredditName = '" + countryName +  "' GROUP BY S.postid) as COMMENTS_PER_POSTS")
+		cursor.execute("SELECT AVG(count) FROM (SELECT COUNT(*) as count FROM reddatabase_comment C, reddatabase_comment_hasa_submission S, reddatabase_submission_hasa_subreddit R WHERE S.cid = C.cid AND S.postid = R.postid AND R.subredditName = '" + countryName +  "' GROUP BY S.postid) as COMMENTS_PER_POSTS")
                 rows = cursor.fetchall()
         return rows
 
