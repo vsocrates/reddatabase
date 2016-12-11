@@ -83,7 +83,7 @@ def activity_over_time(countryName):
 		#print(high_hour)
 
         	with connection.cursor() as cursor:
-			cursor.execute("SELECT COUNT(*) FROM reddatabase_submission_hasa_subreddit R, reddatabase_submission S WHERE R.subredditName = 'sweden' AND R.postid = S.postid AND S.timeSubmitted BETWEEN '" + low_hour + "' AND '" + high_hour + "'")
+			cursor.execute("SELECT COUNT(*) FROM reddatabase_submission_hasa_subreddit R, reddatabase_submission S WHERE R.subredditName = '" + countryName + "' AND R.postid = S.postid AND S.timeSubmitted BETWEEN '" + low_hour + "' AND '" + high_hour + "'")
 			rows = cursor.fetchall()
 			activityLevels.append(rows)
 	
