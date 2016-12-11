@@ -48,7 +48,7 @@ def recent_submissions(subreddit_name):
         recent_users.append(moderator_user_data)
 
     # Takes in submissions from each hour of 12/8/16 using unix epoch time boundaries
-    for hour in range(0, 24):
+    for hour in range(0, 5):
         for submission in (reddit.subreddit(subreddit_name).submissions(start=start_time, end=end_time)):
             total_submissions.append(submission)
         start_time = end_time + 1
@@ -117,8 +117,25 @@ def recent_submissions(subreddit_name):
         recent_users.append(user_data)
 
     # Create connection
-    connection = MySQLdb.connect("127.0.0.1", "root", "yahoo321", "RDB")
+    connection = MySQLdb.connect("127.0.0.1", "root", "reddatabase", "RDB")
     cursor = connection.cursor()
+
+    tables = {
+        "reddatabase_comment",
+        "reddatabase_comment_hasa_submission",
+        "reddatabase_comment_hasa_user",
+        "reddatabase_linkpost",
+        "reddatabase_submission",
+        "reddatabase_submission_hasa_subreddit",
+        "reddatabase_subreddit",
+        "reddatabase_subreddit_hasa_user",
+        "reddatabase_textpost",
+        "reddatabase_user"
+    }
+    truncate_sql = "truncate table "
+    for table in tables:
+        cursor.execute(truncate_sql + table)
+    connection.commit()
 
     #stores user info
     for user in recent_users:
@@ -157,7 +174,7 @@ def recent_submissions(subreddit_name):
     # stores comment info and comment_hasa info
     for comment in recent_comments:
         # create sql statement
-        sql = ("INSERT IGNORE INTO reddatabase_Comment VALUES (%s, %s, %s, %s, %s, %s, %s)")
+        sql = ("INSERT IGNORE INTO reddatabase_comment VALUES (%s, %s, %s, %s, %s, %s, %s)")
         # execute sql statement
         cursor.execute(sql, (comment['cid'],
                              comment['p_cid'],
@@ -167,12 +184,12 @@ def recent_submissions(subreddit_name):
                              comment['commentType'],
                              comment['timeSubmitted']))
         # create sql statement
-        sql = ("INSERT IGNORE INTO reddatabase_Comment_hasa_user VALUES (%s, %s)")
+        sql = ("INSERT IGNORE INTO reddatabase_comment_hasa_user VALUES (%s, %s)")
         # execute sql statement
         cursor.execute(sql, (comment['cid'],
                              comment['username']))
         # create sql statement
-        sql = ("INSERT IGNORE INTO reddatabase_Comment_hasa_submission VALUES (%s, %s)")
+        sql = ("INSERT IGNORE INTO reddatabase_comment_hasa_submission VALUES (%s, %s)")
         # execute sql statement
         cursor.execute(sql, (comment['cid'],
                              comment['postid']))
