@@ -120,6 +120,23 @@ def recent_submissions(subreddit_name):
     connection = MySQLdb.connect("127.0.0.1", "root", "yahoo321", "RDB")
     cursor = connection.cursor()
 
+    tables = {
+        "reddatabase_Comment",
+        "reddatabase_Comment_hasa_submission",
+        "reddatabase_Comment_hasa_user",
+        "reddatabase_linkpost",
+        "reddatabase_submission",
+        "reddatabase_submission_hasa_subreddit",
+        "reddatabase_subreddit",
+        "reddatabase_subreddit_hasa_user",
+        "reddatabase_textpost",
+        "reddatabase_user"
+    }
+    truncate_sql = "truncate table "
+    for table in tables:
+        cursor.execute(truncate_sql + table)
+    connection.commit()
+
     #stores user info
     for user in recent_users:
         # create sql statement
