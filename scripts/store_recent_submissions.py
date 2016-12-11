@@ -36,42 +36,40 @@ def recent_submissions(subreddit_name):
 
     # get moderators of subreddit
     for moderator in reddit.subreddit(subreddit_name).moderator.__iter__():
-	print(moderator.name)
         moderator_data = {
             'subredditName': subreddit_name,
             'username': moderator.name
         }
-	moderator_user_data = {
+        moderator_user_data = {
 		'username': moderator.name,
 		'karma': moderator.link_karma + moderator.comment_karma
-	}
-	moderators.append(moderator_data)
-	recent_users.append(moderator_user_data)
-    print(moderators)
+        }
+        moderators.append(moderator_data)
+        recent_users.append(moderator_user_data)
+
     # Takes in submissions from each hour of 12/8/16 using unix epoch time boundaries
-    for hour in range(0, 2):
+    for hour in range(0, 24):
         for submission in (reddit.subreddit(subreddit_name).submissions(start=start_time, end=end_time)):
             total_submissions.append(submission)
         start_time = end_time + 1
         end_time += 3600
         print(hour, total_submissions.__len__())
 
-
     for submission in total_submissions:
         ratio = reddit.submission(id=submission.id, url=None).upvote_ratio
         ups = round((ratio * submission.score) / (2 * ratio - 1)) if ratio != 0.5 else round(submission.score / 2)
         downs = ups - submission.score
 
-        if submission.selftext:
-            postType = 'text'
-	    postTypeValue = 1
+        if submission.is_self:
+            post_type = 'text'
+            post_type_value = 1
             post_data = {
                 'postid': submission.id,
                 'contents': re.sub("[^a-zA-z0-9!@#,/.,#!$%^&*;:{}=-_`~() /]+", "", submission.selftext)
             }
         else:
-            postType = 'link'
-	    postTypeValue = 0
+            post_type = 'link'
+            post_type_value = 0
             post_data = {
                 'postid': submission.id,
                 'contents': submission.url
@@ -90,7 +88,7 @@ def recent_submissions(subreddit_name):
             'subredditName': subreddit_name,
             'upvotes': ups,
             'downvotes': downs,
-            'postType': postTypeValue,
+            'postType': post_type_value,
             'timeSubmitted': datetime.datetime.utcfromtimestamp(submission.created_utc)
         }
         print(submission_data)
@@ -127,7 +125,7 @@ def recent_submissions(subreddit_name):
         # execute sql statement
         cursor.execute(sql, (user['username'],
                              user['karma']))
-    
+
     #stores submission info
     for submission in recent_submissions:
         # create sql statement
@@ -149,7 +147,7 @@ def recent_submissions(subreddit_name):
     #stores post info
     for post in recent_posts:
         # create sql statement
-        sql = ("INSERT IGNORE INTO reddatabase_" + postType + "post VALUES (%s, %s)")
+        sql = ("INSERT IGNORE INTO reddatabase_" + post_type + "post VALUES (%s, %s)")
         # execute sql statement
         cursor.execute(sql, (post['postid'],
                              post['contents']))
