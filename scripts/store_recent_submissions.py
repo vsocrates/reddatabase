@@ -49,7 +49,7 @@ def recent_submissions(subreddit_name):
 	recent_users.append(moderator_user_data)
     print(moderators)
     # Takes in submissions from each hour of 12/8/16 using unix epoch time boundaries
-    for hour in range(0, 2):
+    for hour in range(0, 24):
         for submission in (reddit.subreddit(subreddit_name).submissions(start=start_time, end=end_time)):
             total_submissions.append(submission)
         start_time = end_time + 1
