@@ -2,29 +2,22 @@
 <html>
 <head>
 	<title></title>
-	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.8/d3.min.js"></script>
 	<script src="http://dimplejs.org/dist/dimple.v2.2.0.min.js"></script>
 </head>
 <body>
 
-	This is number_moderators: {{number_moderators}}
-	This is avg_upvotes: {{avg_upvotes}}
-	This is comments_per_post: {{comments_per_post}}
-	This is activity_over_time: {{activity_over_time}}
-	This is number_textposts: {{number_textposts}}
-	This is number_linkposts: {{number_linkposts}}
+<h1 align="center">More about {{country_name}}! </h1>
+	<p>This is number_moderators: {{number_moderators}}</p>
+	<p>This is avg_upvotes: {{avg_upvotes}}</p>
+	<p>This is comments_per_post: {{comments_per_post}}</p>
 
 	<div id="chartContainer">
-	  
-		<script type="text/javascript">
-/*			var svg = dimple.newSvg("#chartContainer", 590, 400);
-		
-			var data = {
 
-				"Time":[1,2,3,4,5,6,7,8,9,10,11,12],
-				"num_posts":[4,12,7,3,13,9,10,3,0,1,4,12]
-			}
-			/*var data = [
+		<script type="text/javascript">
+			/*
+			var data = [
+
 				{"Time":1, "num_posts":4, "Owner":"Aperture"},
 				{"Time":2, "num_posts":12, "Owner":"Aperture"},
 				{"Time":3, "num_posts":7, "Owner":"Aperture"},
@@ -40,34 +33,62 @@
 
 
 			];
-			data = dimple.filterData(data, "Owner", "Aperture")
-			console.log(data)
-			var myChart = new dimple.chart(svg, data);
-			console.log(data)
+			*/
+			var svg = dimple.newSvg("#chartContainer", 590, 400);
+
+			var data = {{activity_over_time}};
+			var activity_over_time2 = [];
+			
+			for (var i = 0; i < data.length; i++) {
+				var tempDict = {};
+				tempDict['Time'] = i + 1;
+				tempDict['Number of Posts'] = data[i];
+				activity_over_time2.push(tempDict);
+			}
+
+			console.log(activity_over_time2);
+			
+			var myChart = new dimple.chart(svg, activity_over_time2);			
 			myChart.setBounds(60, 30, 505, 305);
 			var x = myChart.addCategoryAxis("x","Time");
-			console.log('first one!')
 //			x.addOrderRule("Date");
-			myChart.addMeasureAxis("y", "num_posts", null);
-			console.log('second one!')
-	      	myChart.draw(); */
-		</script>
+myChart.addMeasureAxis("y", "Number of Posts");
+var s = myChart.addSeries(null, dimple.plot.line);
 
-	</div>
+myChart.draw(); 
+</script>
+<p>All times are calculated in UTC.</p>
+</div>
 <div id="chartContainer2">
 
 	<script type="text/javascript">
-	var data2 = [1];
-    var svg2 = dimple.newSvg("#chartContainer2", 590, 400);
-    
-	var myChart = new dimple.chart(svg2, data2);
-	myChart.setBounds(20, 20, 460, 360)
-	myChart.addMeasureAxis("p", "Unit Sales");
-	myChart.addSeries("Owner", dimple.plot.pie);
-	myChart.addLegend(500, 20, 90, 300, "left");
-	myChart.draw();
+		var textPostNum = {{number_textposts}}
+		var linkPostNum = {{number_linkposts}}
 
-  </script>
+		text_and_link_posts = [];
+		var temp_dict = {};
+		
+		temp_dict['Type of Post'] = "Text Post";
+		temp_dict['numPosts'] = textPostNum;
+		text_and_link_posts.push(temp_dict);
+
+		temp_dict = {};
+		temp_dict['Type of Post'] = "Link Post";
+		temp_dict['numPosts'] = linkPostNum;
+		text_and_link_posts.push(temp_dict);
+		
+
+
+		var svg = dimple.newSvg("#chartContainer2", 590, 400);
+		
+		var myChart = new dimple.chart(svg, text_and_link_posts);
+		myChart.setBounds(20, 20, 460, 360)
+		myChart.addMeasureAxis("p", "numPosts");
+		myChart.addSeries("Type of Post", dimple.plot.pie);
+		myChart.addLegend(500, 20, 90, 300, "left");
+		myChart.draw();
+
+	</script>
 </div>
 </body>
 </html>
