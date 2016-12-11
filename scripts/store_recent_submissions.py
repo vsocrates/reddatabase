@@ -117,7 +117,7 @@ def recent_submissions(subreddit_name):
         recent_users.append(user_data)
 
     # Create connection
-    connection = MySQLdb.connect("127.0.0.1", "root", "reddatabase", "RDB")
+    connection = MySQLdb.connect("127.0.0.1", "root", "yahoo321", "RDB")
     cursor = connection.cursor()
 
     #stores user info
