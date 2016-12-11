@@ -15,6 +15,11 @@ def index(request):
 
 def extrainfo(request, country_name):
 
+    if country_name == 'Germany':
+        country_name = 'de'
+    else if country_name == 'United Kingdom':
+        country_name == 'ukpolitics'
+
     number_moderators1 =  number_moderators(country_name)
     number_moderators1 = str(number_moderators1[0][0])
     
@@ -33,6 +38,11 @@ def extrainfo(request, country_name):
     number_textposts1 = number_textposts(country_name)
     number_textposts1 = str(number_textposts1[0][0])
 
+    if country_name == 'de':
+        country_name = 'Germany'
+    else if country_name == 'ukpolitics':
+        country_name == 'United Kingdom'
+
     template = loader.get_template('reddatabase/country_page.html')
     context = { 'number_moderators':number_moderators1,
                 'avg_upvotes':avg_upvotes1,
@@ -42,7 +52,8 @@ def extrainfo(request, country_name):
                 'number_linkposts':number_linkposts1,
                 'country_name' : country_name,
         }
-    print 'activity_over_time1 asdfasdf: ', activity_over_time1
+
+
     return HttpResponse(template.render(context, request))
 
 def number_moderators(countryName):
