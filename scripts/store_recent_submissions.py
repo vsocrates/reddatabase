@@ -8,12 +8,12 @@ my_client_id = 'IB4hdXbF1kcsWQ'
 my_client_secret = '7uUB8oh9icfrneygPnJUMW1m6Xg'
 
 # add subreddits to pull from here
-subreddits = ['de']
+subreddits = ['de','india', 'argentina', 'australia', 'canada', 'france', 'sweden', 'russia']
 
 # takes submission data and for all submissions,
 # takes data on comments and users and stores
 # all data in MySQL tables
-def recent_submissions(subreddit_name):
+def recent_submissions(subreddit_name, database_cleared):
     reddit = praw.Reddit(user_agent=my_user_agent,
                          client_id=my_client_id,
                          client_secret=my_client_secret)
@@ -120,7 +120,8 @@ def recent_submissions(subreddit_name):
     connection = MySQLdb.connect("127.0.0.1", "root", "reddatabase", "RDB")
     cursor = connection.cursor()
 
-    tables = {
+    if database_cleared is 0:
+	tables = {
         "reddatabase_comment",
         "reddatabase_comment_hasa_submission",
         "reddatabase_comment_hasa_user",
@@ -131,11 +132,12 @@ def recent_submissions(subreddit_name):
         "reddatabase_subreddit_hasa_user",
         "reddatabase_textpost",
         "reddatabase_user"
-    }
-    truncate_sql = "truncate table "
-    for table in tables:
-        cursor.execute(truncate_sql + table)
-    connection.commit()
+    	}
+    	truncate_sql = "truncate table "
+    	for table in tables:
+        	cursor.execute(truncate_sql + table)
+    	connection.commit()
+	database_cleared = 1
 
     #stores user info
     for user in recent_users:
@@ -238,9 +240,10 @@ def comment_parser(root_comment, parent_comment_id, submission_id):
 # and puts data on submissions, comments, and
 # users into MySQL tables
 def start_script():
+    database_cleared = 0
     for subreddit in subreddits:
         print(subreddit)
-        recent_submissions(subreddit)
-
+        recent_submissions(subreddit, database_cleared)
+	database_cleared = 1
 
 start_script()

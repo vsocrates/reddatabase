@@ -15,9 +15,10 @@ def index(request):
 
 def extrainfo(request, country_name):
 
+    print country_name
     if country_name == 'Germany':
         country_name = 'de'
-    elif country_name == 'United Kingdom':
+    elif country_name == 'United_Kingdom':
         country_name == 'ukpolitics'
 
     number_moderators1 =  number_moderators(country_name)
@@ -41,7 +42,7 @@ def extrainfo(request, country_name):
     if country_name == 'de':
         country_name = 'Germany'
     elif country_name == 'ukpolitics':
-        country_name == 'United Kingdom'
+        country_name == 'United_Kingdom'
 
     template = loader.get_template('reddatabase/country_page.html')
     context = { 'number_moderators':number_moderators1,
