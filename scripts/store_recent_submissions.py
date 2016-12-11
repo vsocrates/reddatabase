@@ -97,7 +97,7 @@ def recent_submissions(subreddit_name):
 
         submission.comments.replace_more(limit=0)
         for comment in submission.comments:
-            if hasattr(comment, 'author.name'):  # catch deleted comments
+            if comment.author is not None:  # catch deleted comments
                 comment_data = {
                     'cid': comment.id,
                     'p_cid': submission.id,
@@ -216,7 +216,7 @@ def recent_submissions(subreddit_name):
 # Helper method for parsing through chains of comments
 def comment_parser(root_comment, parent_comment_id, submission_id):
     comment_list = []
-    if hasattr(root_comment, 'author.name'):  # catch deleted comments
+    if root_comment.author is not None:  # catch deleted comments
         comment_data = {
             'cid': root_comment.id,
             'p_cid': parent_comment_id,
